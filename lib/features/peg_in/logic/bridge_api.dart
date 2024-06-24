@@ -8,7 +8,8 @@ class BridgeApi {
   BridgeApi({required this.baseAddress});
 
   Future<StartSessionResponse> startSession(StartSessionRequest request) async {
-    final response = await httpClient.post(Uri.parse("$baseAddress/api/start-session-pegin"),
+    final response = await httpClient.post(
+        Uri.parse("$baseAddress/api/start-session-pegin"),
         body: utf8.encode(json.encode(request.toJson())),
         headers: {'Content-Type': 'application/json'}..addAll(corsHeaders));
     assert(response.statusCode == 200, "HTTP Error: ${response.body}");
@@ -17,7 +18,8 @@ class BridgeApi {
   }
 
   Future<MintingStatus?> getMintingStatus(String sessionID) async {
-    final response = await httpClient.post(Uri.parse("$baseAddress/api/start-session-pegin"),
+    final response = await httpClient.post(
+        Uri.parse("$baseAddress/api/topl-minting-status"),
         body: utf8.encode(json.encode({"sessionID": sessionID})),
         headers: {'Content-Type': 'application/json'}..addAll(corsHeaders));
     if (response.statusCode == 404) return null;
@@ -46,7 +48,10 @@ class StartSessionResponse {
   final String descriptor;
 
   StartSessionResponse(
-      {required this.sessionID, required this.script, required this.escrowAddress, required this.descriptor});
+      {required this.sessionID,
+      required this.script,
+      required this.escrowAddress,
+      required this.descriptor});
 
   dynamic toJson() => {
         "sessionID": sessionID,
@@ -83,17 +88,15 @@ class MintingStatus_PeginSessionStateWaitingForBTC extends MintingStatus {}
 
 class MintingStatus_PeginSessionWaitingForRedemption extends MintingStatus {
   final String address;
-  final String bridgePKey;
   final String redeemScript;
 
   MintingStatus_PeginSessionWaitingForRedemption(
-      {required this.address, required this.bridgePKey, required this.redeemScript});
+      {required this.address, required this.redeemScript});
 
   static MintingStatus_PeginSessionWaitingForRedemption fromJson(data) =>
       MintingStatus_PeginSessionWaitingForRedemption(
-        address: data.address,
-        bridgePKey: data.bridgePKey,
-        redeemScript: data.redeemScript,
+        address: data["address"],
+        redeemScript: data["redeemScript"],
       );
 }
 

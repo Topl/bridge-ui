@@ -10,22 +10,22 @@ services:
       - "18443:18443"
       - "28332:28332"
   bridge:
-    build:
-      context: .
-      dockerfile: bridge-run.Dockerfile
+    image: toplprotocol/topl-btc-bridge:latest
     command:
       - "--topl-host"
       - "bifrost"
       - "--btc-url"
       - "http://bitcoin"
+      - "--zmq-host"
+      - "bitcoin"
       - "--topl-wallet-seed-file"
-      - "/wallet/topl-wallet.json"
+      - "/app/wallet/topl-wallet.json"
       - "--topl-wallet-db"
-      - "/wallet/topl-wallet.db"
+      - "/app/wallet/topl-wallet.db"
       - "--btc-peg-in-seed-file"
-      - "/btc-wallet/peg-in-wallet.json"
+      - "/app/btc-wallet/peg-in-wallet.json"
       - "--btc-wallet-seed-file"
-      - "/btc-wallet/btc-wallet.json"
+      - "/app/btc-wallet/btc-wallet.json"
     ports:
       - "4000:4000"
     depends_on:
@@ -36,15 +36,15 @@ services:
       bridge_init:
         condition: service_completed_successfully
     volumes:
-      - wallet:/wallet
-      - ./peg-in-wallet.json:/btc-wallet/peg-in-wallet.json
-      - ./btc-wallet.json:/btc-wallet/btc-wallet.json
+      - wallet:/app/wallet
+      - ./peg-in-wallet.json:/app/btc-wallet/peg-in-wallet.json
+      - ./btc-wallet.json:/app/btc-wallet/btc-wallet.json
   bridge_init:
-    image: sbtscala/scala-sbt:eclipse-temurin-jammy-11.0.22_7_1.9.8_3.3.1
+    build:
+      context: .
+      dockerfile: bridge-init.Dockerfile
     volumes:
-      - wallet:/wallet
-      - ./bridge_init.sh:/bridge_init.sh
-    command: ["/bin/sh", "/bridge_init.sh"]
+      - wallet:/app/wallet
     depends_on:
       - bifrost
 
