@@ -10,21 +10,24 @@ import 'package:apparatus_wallet/features/peg_in/widgets/peg_in.dart';
 const homeRoute = '/';
 const swapRoute = '/swap';
 
-final providedNavigator = GlobalKey<NavigatorState>(); //TODO: remove with provider refactor
+final providedNavigator =
+    GlobalKey<NavigatorState>(); //TODO: remove with provider refactor
 
 // GoRouter configuration
 final router = GoRouter(
   initialLocation: homeRoute,
-  debugLogDiagnostics: !kReleaseMode ? true : false, // Turns logging off when in release mode
+  debugLogDiagnostics:
+      !kReleaseMode ? true : false, // Turns logging off when in release mode
   routes: [
     GoRoute(
       path: homeRoute,
       builder: (context, state) => Provider(
-          create: (context) => BridgeApi(baseAddress: ""),
+          create: (context) => BridgeApi(baseAddress: "http://localhost:4000"),
           child: Navigator(
               key: providedNavigator,
-              onGenerateRoute: (settings) =>
-                  MaterialPageRoute(builder: (context) => const PegInPage(), settings: settings))),
+              onGenerateRoute: (settings) => MaterialPageRoute(
+                  builder: (context) => const PegInPage(),
+                  settings: settings))),
     ),
     GoRoute(
       path: swapRoute,
