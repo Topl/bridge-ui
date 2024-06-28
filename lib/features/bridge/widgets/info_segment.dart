@@ -47,7 +47,7 @@ class InfoSegment extends HookConsumerWidget {
     final transferTimeWidget = Container(
       decoration: BoxDecoration(
         border: Border.all(color: a2),
-        borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(16), bottomRight: Radius.circular(16)),
+        // borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(16), bottomRight: Radius.circular(16)),
       ),
       padding: padding,
       child: Row(
@@ -78,7 +78,7 @@ class InfoSegment extends HookConsumerWidget {
           Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                // color: Colors.green.shade900.withOpacity(0.3),
+                color: Colors.green.shade900.withOpacity(0.3),
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Row(
@@ -140,7 +140,7 @@ class InfoSegment extends HookConsumerWidget {
         addressWidget,
         receiveWidget,
         transferTimeWidget,
-        // feeWidget,
+        feeWidget,
       ],
     );
   }

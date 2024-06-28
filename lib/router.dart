@@ -1,20 +1,21 @@
+import 'package:apparatus_wallet/constants/assets.dart';
 import 'package:apparatus_wallet/constants/routes.dart';
 import 'package:apparatus_wallet/features/bridge/bridge_ui.dart';
 import 'package:apparatus_wallet/features/dashboard/dashboard.dart';
 import 'package:apparatus_wallet/features/peg_in/logic/bridge_api.dart';
 import 'package:apparatus_wallet/features/peg_in/widgets/peg_in.dart';
+import 'package:apparatus_wallet/utils/ui_utils.dart';
+import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:provider/provider.dart' as legacy;
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart' as legacy;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'features/base/base.dart';
 
 part 'router.g.dart';
-
-
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -23,7 +24,7 @@ final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>()
 GoRouter router(Ref ref) {
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: bridgeRoute,
+    initialLocation: dashboardRoute,
     debugLogDiagnostics: !kReleaseMode ? true : false, // Turns logging off when in release mode
     routes: [
       ShellRoute(
@@ -72,9 +73,41 @@ GoRouter router(Ref ref) {
         path: mainRoute,
         builder: (context, state) => BaseUI(Container()),
       ),
+      GoRoute(
+        path: homeRoute,
+        builder: (context, state) => Scaffold(
+          backgroundColor: bkg,
+          body: SelectionArea(
+            child: Row(
+              children: [
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                      context.go(dashboardRoute);
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        SizedBox(
+                          width: 64,
+                          height: 64,
+                          child: Assets.apparatusDark,
+                        ),
+                        Text("Welcome to Apparatus Wallet", style: context.textStyles.displayLarge),
+                        verticalSpacerL,
+                        Text("Click anywhere on the screen to go to bridge", style: context.textStyles.displaySmall),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      )
     ],
   );
 }
 
 // GoRouter configuration
-
