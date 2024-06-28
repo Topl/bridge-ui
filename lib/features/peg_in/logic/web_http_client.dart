@@ -8,4 +8,4 @@ final corsHeaders = {
 };
 
 Client makeHttpClient() =>
-    FetchClient(mode: RequestMode.cors, streamRequests: false);
+    FetchClient(mode: RequestMode.cors, streamRequests: true);

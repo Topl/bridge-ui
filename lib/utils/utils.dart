@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 String formatTimestamp(DateTime timestamp) {
   final now = DateTime.now();
@@ -15,5 +16,14 @@ String formatTimestamp(DateTime timestamp) {
   } else {
     // If more than a week ago, just show the date
     return 'Fetched on ${DateFormat.yMMMd().format(timestamp)}';
+  }
+}
+
+Future<void> launchURL(String url) async {
+  final uri = Uri.parse(url);
+  if (await canLaunchUrl(uri)) {
+    await launchUrl(uri);
+  } else {
+    throw 'Could not launch $url';
   }
 }
