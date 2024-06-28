@@ -4,8 +4,8 @@ on:
   workflow_call:
     inputs:
       remote-docker-image:
-        description: 'Remote Docker image. ex: toplprotocol/annulus'
-        default: "toplprotocol/annulus"
+        description: 'Remote Docker image. ex: ghcr.io/topl/bridge-ui'
+        default: "toplghcr.io/toplprotocol/bridge-ui"
         required: false
         type: string
 
@@ -39,9 +39,11 @@ jobs:
 
       - uses: actions-ecosystem/action-get-latest-tag@v1
         id: get-latest-tag
-        if: ${{ steps.release-label.outputs.level != null }}
         with:
           semver_only: true
+      
+      # - run: |
+      #     # Construct a semver using regex.
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
@@ -52,8 +54,8 @@ jobs:
             # On a push tag event, use the branch name as a tag without the v. ex: v.0.1.0 -> 0.1.0
             type=semver,pattern={{version}}
             # Defaults
-            type=ref,event=push
-            type=ref,event=pr
+            type=sha,event=push,prefix=${{ steps.get-latest-tag.outputs.tag }}-
+            type=sha,event=pr,prefix=${{ steps.get-latest-tag.outputs.tag }}-
 
       - name: Echo metadata
         run: |
