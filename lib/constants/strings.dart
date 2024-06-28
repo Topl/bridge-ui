@@ -4,7 +4,7 @@ class Strings {
 
   static const apparatus = 'Apparatus';
   static const toAddress = 'To address';
-  static const receiveOn = "Receive on ";
+  static const receiveOn = "Receive on";
   static const transferTime = 'Transfer time';
   static const ourFee = 'Our Fee';
   static const warningRates = 'Warning: Rates are not reflective of the real price';
@@ -21,5 +21,16 @@ class Strings {
   static const btc = 'BTC';
   static const eth = 'ETH';
 
+  static const termsOfUse = "Terms of Use";
+  static const termsOfUseShort = "ToU";
+
+  static const navOverview = 'Overview';
+  static const navBridge = 'Bridge';
+  static const navTransfer = 'Transfer';
+  static const navWallet = 'Wallet';
+  static const navSettings = 'Settings';
+
 
 }
+
+
