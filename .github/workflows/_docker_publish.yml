@@ -44,7 +44,7 @@ jobs:
 
       - name: Get rid of the leading v!
         run: |
-          TAG_NAME=$(${{ steps.get-latest-tag.outputs.tag }})
+          TAG_NAME=${{ steps.get-latest-tag.outputs.tag }}
           echo "TAG_NAME=${TAG_NAME:1}" >> $GITHUB_OUTPUT
         id: version
       
