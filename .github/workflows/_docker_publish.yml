@@ -41,9 +41,15 @@ jobs:
         id: get-latest-tag
         with:
           semver_only: true
+
+      - name: Get rid of the leading v!
+        run: |
+          echo "TAG_NAME=$(${{ steps.get-latest-tag.outputs.tag }}:1)" >> $GITHUB_OUTPUT
+        id: version
       
-      # - run: |
-      #     # Construct a semver using regex.
+      - run: |
+          # Construct a semver using regex.
+          echo ${{ steps.version.outputs.TAG_NAME }}
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
@@ -63,7 +69,7 @@ jobs:
           echo "labels: ${{ steps.meta.outputs.labels }}"
       
       - name: Build and push Docker image
-        uses: docker/build-push-action@v4.0.0
+        uses: docker/build-push-action@v6
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
