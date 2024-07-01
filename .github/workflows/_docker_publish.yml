@@ -5,7 +5,7 @@ on:
     inputs:
       remote-docker-image:
         description: 'Remote Docker image. ex: ghcr.io/topl/bridge-ui'
-        default: "toplghcr.io/toplprotocol/bridge-ui"
+        default: "ghcr.io/topl/bridge-ui"
         required: false
         type: string
 
@@ -47,10 +47,6 @@ jobs:
           TAG_NAME=${{ steps.get-latest-tag.outputs.tag }}
           echo "TAG_NAME=${TAG_NAME:1}" >> $GITHUB_OUTPUT
         id: version
-      
-      - run: |
-          # Construct a semver using regex.
-          echo ${{ steps.version.outputs.TAG_NAME }}
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
@@ -61,8 +57,8 @@ jobs:
             # On a push tag event, use the branch name as a tag without the v. ex: v.0.1.0 -> 0.1.0
             type=semver,pattern={{version}}
             # Defaults
-            type=sha,event=push,prefix=${{ steps.get-latest-tag.outputs.tag }}-
-            type=sha,event=pr,prefix=${{ steps.get-latest-tag.outputs.tag }}-
+            type=sha,event=push,prefix=${{ steps.version.outputs.TAG_NAME }}-
+            type=sha,event=pr,prefix=${{ steps.version.outputs.TAG_NAME }}-
 
       - name: Echo metadata
         run: |
@@ -73,6 +69,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          push: ${{ github.event_name != 'pull_request' }}
+          # push: ${{ github.event_name != 'pull_request' }}
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
