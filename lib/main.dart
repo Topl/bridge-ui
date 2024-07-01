@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:apparatus_wallet/constants/themes.dart';
 import 'package:apparatus_wallet/router.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'constants/strings.dart';
 
@@ -14,11 +14,13 @@ void main() {
   );
 }
 
-class Bridge extends StatelessWidget {
+class Bridge extends ConsumerWidget {
   const Bridge({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
+
     return MaterialApp.router(
       title: Strings.appTitle,
       theme: lightTheme,

@@ -1,0 +1,9 @@
+name: PR
+on:
+  pull_request:
+
+jobs:
+  # build:
+  #   uses: ./.github/workflows/_build.yml
+  publish_docker_images:
+    uses: ./.github/workflows/_docker_publish.yml

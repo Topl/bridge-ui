@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:apparatus_wallet/features/peg_in/logic/bridge_api.dart';
 import 'package:uuid/uuid.dart';
@@ -63,7 +62,7 @@ class _PegInPageState extends State<PegInPage> {
       final response = await bridgeApi.startSession(request);
       setState(() => session = response);
     } catch (e) {
-      setState(() => error = "An error occurred. Lol! $e");
+      setState(() => error = "An error occurred. Lol!");
     }
   }
 
@@ -108,14 +107,9 @@ class _PegInDepositFundsPageState extends State<PegInDepositFundsPage> {
             children: <Widget>[
               const Text('Please send BTC to the following address.',
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-              TextButton.icon(
-                onPressed: () => Clipboard.setData(
-                    ClipboardData(text: widget.escrowAddress)),
-                icon: const Icon(Icons.copy),
-                label: Text(widget.escrowAddress,
-                    style: const TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.w100)),
-              ),
+              Text(widget.escrowAddress,
+                  style: const TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.w100)),
               TextButton.icon(
                   onPressed: () {
                     Navigator.push(
@@ -158,7 +152,7 @@ class _PegInAwaitingFundsPageState extends State<PegInAwaitingFundsPage> {
               FutureBuilder(
                 future: awaitRedemption(context),
                 builder: (context, snapshot) => snapshot.hasError
-                    ? errorOccurred(snapshot.error)
+                    ? errorOccurred
                     : snapshot.hasData
                         ? successButton
                         : waiting,
@@ -191,8 +185,8 @@ class _PegInAwaitingFundsPageState extends State<PegInAwaitingFundsPage> {
       },
       icon: const Icon(Icons.wallet),
       label: const Text("Next"));
-  Widget errorOccurred(Object? e) => Text('An error occurred. Lol. $e',
-      style: const TextStyle(
+  Widget get errorOccurred => const Text('An error occurred. Lol.',
+      style: TextStyle(
           fontSize: 14, fontWeight: FontWeight.bold, color: Colors.red));
 }
 
