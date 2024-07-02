@@ -86,7 +86,7 @@ class BridgeState with _$BridgeState {
   }) = _BridgeState;
 
   factory BridgeState.base() =>
-      BridgeState(currency: Currency.bitcoin, value: 0, rates: CryptoRates.zero(), loading: false);
+      BridgeState(currency: Currency.ethereum, value: 0, rates: CryptoRates.zero(), loading: false);
 }
 
 enum Currency { ethereum, bitcoin }
