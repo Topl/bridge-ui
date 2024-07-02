@@ -9,9 +9,9 @@ jobs:
   build:
     uses: ./.github/workflows/_build.yml 
 
-  publish_private:
+  publish_prerelease:
     uses: ./.github/workflows/_docker_publish.yml
     needs: [build]
     secrets: inherit
     with:
-      remote-docker-image: "us-central1-docker.pkg.dev/topl-shared-project-dev/topl-artifacts-dev/annulus"
+      remote-docker-image: "ghcr.io/topl/bridge-ui"
