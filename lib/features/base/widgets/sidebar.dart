@@ -35,7 +35,7 @@ class SideBar extends HookConsumerWidget {
       settingsRoute: (settingsRoute, 4),
     };
 
-    final controller = useState(SidebarXController(selectedIndex: navMap[nav.route]?.$2 ?? 1, extended: true));
+    final controller = useState(SidebarXController(selectedIndex: navMap[nav.route]?.$2 ?? 0, extended: true));
 
     return SidebarX(
       footerDivider: const Divider(),
