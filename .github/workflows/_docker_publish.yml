@@ -1,0 +1,75 @@
+name: Publish Docker Images (Public)
+
+on:
+  workflow_call:
+    inputs:
+      remote-docker-image:
+        description: 'Remote Docker image. ex: ghcr.io/topl/bridge-ui'
+        default: "ghcr.io/topl/bridge-ui"
+        required: false
+        type: string
+
+jobs:
+  publish_docker_images:
+    name: Publish Docker Images
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout current branch
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: true
+
+      # - name: Log in to Docker Hub
+      #   uses: docker/login-action@v2
+      #   with:
+      #     username: ${{ secrets.DOCKERHUB_USERNAME }}
+      #     password: ${{ secrets.DOCKERHUB_TOKEN }}
+  
+      - name: Log in to the Github Container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions-ecosystem/action-get-latest-tag@v1
+        id: get-latest-tag
+        with:
+          semver_only: true
+
+      - name: Get rid of the leading v!
+        run: |
+          TAG_NAME=${{ steps.get-latest-tag.outputs.tag }}
+          echo "TAG_NAME=${TAG_NAME:1}" >> $GITHUB_OUTPUT
+        id: version
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ inputs.remote-docker-image }}
+          tags: |
+            # On a push tag event, use the branch name as a tag without the v. ex: v.0.1.0 -> 0.1.0
+            type=semver,pattern={{version}}
+            # Defaults
+            type=sha,event=push,prefix=${{ steps.version.outputs.TAG_NAME }}-
+            type=sha,event=pr,prefix=${{ steps.version.outputs.TAG_NAME }}-
+
+      - name: Echo metadata
+        run: |
+          echo "tags: ${{ steps.meta.outputs.tags }}"
+          echo "labels: ${{ steps.meta.outputs.labels }}"
+      
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          # push: ${{ github.event_name != 'pull_request' }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
