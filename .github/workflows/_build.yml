@@ -19,12 +19,12 @@ jobs:
           # flutter-version: '' TODO: Pin this to a version.
           channel: stable
 
-      - run: flutter pub get
+      - run: flutter doctor -v
 
       - name: Checkout
         uses: actions/checkout@v3
 
-      - run: flutter doctor -v
+      - run: flutter pub get
 
       - run: flutter pub run build_runner build --delete-conflicting-outputs
 
