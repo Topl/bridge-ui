@@ -15,7 +15,7 @@ Allows users to:
 * Ensure you have [Flutter](https://flutter.dev/) installed and updated.
 * run `flutter pub get` to install dependencies
 * build generated files `flutter pub run build_runner build`
-* run the app `flutter run -d chrome`
+* run the app `flutter run -d chrome` (firefox can use flutter run -d web-server)
 
 Please file feature requests and bugs at the [issue tracker](https://github.com/Topl/ribn/issues).
 If you want to contribute to this library, please submit a Pull Request.
