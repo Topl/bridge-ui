@@ -18,11 +18,17 @@ jobs:
         with:
           # flutter-version: '' TODO: Pin this to a version.
           channel: stable
-      - run: flutter doctor -v
+
+      - run: flutter pub get
+
       - name: Checkout
         uses: actions/checkout@v3
-      - run: flutter pub get
+
+      - run: flutter doctor -v
+
       - run: dart run build_runner build --delete-conflicting-outputs
+
       - run: flutter build ${{ matrix.target }}
+
       - name: Run tests
         run: flutter test --dart-define=FLUTTER_TEST=true
