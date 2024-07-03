@@ -34,8 +34,17 @@ dependencies:
   http: ^1.2.1 #TODO: Migrate to fetch_client
 
   #Misc
-  uuid: ^4.4.0
+  uuid: ^4.2.1
   crypto: ^3.0.3
+  biometric_storage: ^5.0.1
+
+  # Blockchain
+  brambldart: ^2.0.0-beta.0
+  topl_common: ^2.1.0
+  servicekit:
+    git:
+      url: git@github.com:Topl/dart_service_kit.git
+      ref: beta-0-updates
 
 dev_dependencies:
   flutter_test:
