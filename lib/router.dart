@@ -1,3 +1,4 @@
+import 'package:apparatus_wallet/features/bridge/widgets/utxos_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -9,13 +10,14 @@ import 'package:apparatus_wallet/features/peg_in/widgets/peg_in.dart';
 /// const routes # TODO move to own file once we get more routes
 const homeRoute = '/';
 const swapRoute = '/swap';
+const walletRoute = '/wallet';
 
 final providedNavigator =
     GlobalKey<NavigatorState>(); //TODO: remove with provider refactor
 
 // GoRouter configuration
 final router = GoRouter(
-  initialLocation: homeRoute,
+  initialLocation: walletRoute,
   debugLogDiagnostics:
       !kReleaseMode ? true : false, // Turns logging off when in release mode
   routes: [
@@ -32,6 +34,10 @@ final router = GoRouter(
     GoRoute(
       path: swapRoute,
       builder: (context, state) => const BridgeUi(),
+    ),
+    GoRoute(
+      path: walletRoute,
+      builder: (context, state) => const UtxosView(),
     ),
   ],
 );

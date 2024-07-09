@@ -1,4 +1,5 @@
-import 'package:brambldart/brambldart.dart';
+import 'package:apparatus_wallet/utils/rpc/channel_factory_web.dart';
+import 'package:grpc/grpc_connection_interface.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'rpc_channel.g.dart';
@@ -7,14 +8,14 @@ part 'rpc_channel.g.dart';
 class RpcChannel extends _$RpcChannel {
   @override
   RpcChannelState build() {
-    // TODO
-    return RpcChannelState(nodeRpcChannel: null!, genusRpcChannel: null!);
+    final channel = makeChannel("localhost", 9094, false);
+    return RpcChannelState(nodeRpcChannel: channel, genusRpcChannel: channel);
   }
 }
 
 class RpcChannelState {
-  final Channel nodeRpcChannel;
-  final Channel genusRpcChannel;
+  final ClientChannelBase nodeRpcChannel;
+  final ClientChannelBase genusRpcChannel;
 
   RpcChannelState(
       {required this.nodeRpcChannel, required this.genusRpcChannel});

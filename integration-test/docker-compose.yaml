@@ -39,9 +39,19 @@ services:
       - wallet:/app/wallet
       - ./peg-in-wallet.json:/app/btc-wallet/peg-in-wallet.json
       - ./btc-wallet.json:/app/btc-wallet/btc-wallet.json
+  envoy:
+    build:
+      context: envoy
+      dockerfile: envoy.Dockerfile
+    ports:
+      - "9094:9094"
+    links:
+      - bifrost
+    volumes:
+      - ./envoy/config.yaml:/etc/envoy/config.yaml
   bridge_init:
     build:
-      context: .
+      context: init
       dockerfile: bridge-init.Dockerfile
     volumes:
       - wallet:/app/wallet
