@@ -23,7 +23,9 @@ export ADDRESS=$(brambl-cli wallet current-address --walletdb $TOPL_WALLET_DB)
 
 cd /app
 
-brambl-cli simple-transaction create --from-fellowship nofellowship --from-template genesis --from-interaction 1 --change-fellowship nofellowship --change-template genesis --change-interaction 1  -t $ADDRESS -w $TOPL_WALLET_PASSWORD -o genesisTx.pbuf -n private -a 100000 -h bifrost --port 9084 --keyfile $TOPL_WALLET_JSON --walletdb $TOPL_WALLET_DB --fee 10 --transfer-token lvl
+echo "Genesis UTxOs"
+brambl-cli genus-query utxo-by-address --from-fellowship nofellowship --from-template genesis --host bifrost --port 9084 --secure false --walletdb $TOPL_WALLET_DB
+brambl-cli simple-transaction create --from-fellowship nofellowship --from-template genesis --from-interaction 1 --change-fellowship nofellowship --change-template genesis --change-interaction 1  -t $ADDRESS -w $TOPL_WALLET_PASSWORD -o genesisTx.pbuf -n private -a 10000 -h bifrost --port 9084 --keyfile $TOPL_WALLET_JSON --walletdb $TOPL_WALLET_DB --fee 10 --transfer-token lvl
 brambl-cli tx prove -i genesisTx.pbuf --walletdb $TOPL_WALLET_DB --keyfile $TOPL_WALLET_JSON -w $TOPL_WALLET_PASSWORD -o genesisTxProved.pbuf
 export GROUP_UTXO=$(brambl-cli tx broadcast -i genesisTxProved.pbuf -h bifrost --port 9084 --secure false)
 echo "GROUP_UTXO: $GROUP_UTXO"

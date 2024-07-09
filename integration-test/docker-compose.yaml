@@ -55,6 +55,7 @@ services:
       dockerfile: bridge-init.Dockerfile
     volumes:
       - wallet:/app/wallet
+      - ./init/bridge_init.sh:/bridge_init.sh
     depends_on:
       - bifrost
 

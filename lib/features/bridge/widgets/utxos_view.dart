@@ -17,17 +17,18 @@ class UtxosView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final utxos = ref.read(walletUtxosProvider);
+    final utxos = ref.watch(walletUtxosProvider);
 
     return Scaffold(
       body: body(utxos),
     );
   }
 
-  Widget body(utxos) {
+  Widget body(AsyncValue<UtxosMap> utxos) {
     return switch (utxos) {
-      AsyncData(:final value) => const Text("Utxos Found"),
-      AsyncData(:final error) => const Text("Utxos failed to load"),
+      AsyncData(:final value) =>
+        TransactView(utxos: value, submitTransaction: (tx) {}),
+      AsyncError(:final error) => Text("Utxos failed to load. Reason: $error"),
       _ => const Text("Loading")
     };
   }

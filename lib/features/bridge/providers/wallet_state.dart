@@ -20,41 +20,69 @@ class WalletUtxos extends _$WalletUtxos {
     final genusRpcClient =
         TransactionServiceClient(rpcChannels.genusRpcChannel);
 
+    // TODO: User provided
     final password = List.filled(32, 0);
-    final wallet = (await serviceKit.walletApi.createAndSaveNewWallet(password))
+    // TODO: Load existing
+    final wallet =
+        (await serviceKit.walletApi.createNewWallet(password)).getOrThrow();
+    (await serviceKit.walletApi.saveWallet(wallet.mainKeyVaultStore))
         .getOrThrow();
     final mainKey = serviceKit.walletApi
         .extractMainKey(wallet.mainKeyVaultStore, password)
         .getOrThrow();
-    await serviceKit.walletStateApi.initWalletState(
+    try {
+      await serviceKit.walletStateApi.initWalletState(
         NetworkConstants.privateNetworkId,
         NetworkConstants.mainLedgerId,
-        mainKey.vk);
+        mainKey.vk,
+      );
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+    final encodedGenesisAddress =
+        serviceKit.walletStateApi.getAddress("nofellowship", "genesis", 1)!;
+    final genesisAddress =
+        AddressCodecs.decode(encodedGenesisAddress).getOrThrow();
+    final genesisLock =
+        serviceKit.walletStateApi.getLock("nofellowship", "genesis", 1)!;
 
     Future<UtxosMap> fetchUtxos() async {
       // Get the current address from the wallet
-      final encodedAddressOpt = serviceKit.walletStateApi.getCurrentAddress();
-      // serviceKit.walletStateApi.getAddress("self", "default", null);
-      ArgumentError.checkNotNull(encodedAddressOpt);
-      final address = AddressCodecs.decode(encodedAddressOpt).getOrThrow();
-      // Get the utxos associated with that address
-      final utxosList = (await genusRpcClient.getTxosByLockAddress(
-        QueryByLockAddressRequest(address: address, state: TxoState.UNSPENT),
-      ))
-          .txos;
+      final encodedAddress = serviceKit.walletStateApi.getCurrentAddress();
+      final address = AddressCodecs.decode(encodedAddress).getOrThrow();
+      final utxosList = [
+        ...(await genusRpcClient.getTxosByLockAddress(QueryByLockAddressRequest(
+                address: address, state: TxoState.UNSPENT)))
+            .txos,
+        // In addition to the local wallet's funds, also fetch the public genesis funds
+        ...(await genusRpcClient.getTxosByLockAddress(QueryByLockAddressRequest(
+                address: genesisAddress, state: TxoState.UNSPENT)))
+            .txos,
+      ];
       final utxos =
           Map.fromEntries(utxosList.map((u) => MapEntry(u.outputAddress, u)));
       return utxos;
     }
 
-    yield await fetchUtxos();
+    try {
+      yield await fetchUtxos();
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
 
     // For each block adoption or unadoption
     await for (final _ in nodeRpcClient
         .synchronizationTraversal(SynchronizationTraversalReq())) {
-      // Wait 1 second for Genus to catch up
-      await Future.delayed(const Duration(seconds: 1));
-      yield await fetchUtxos();
+      try {
+        // Wait 1 second for Genus to catch up
+        await Future.delayed(const Duration(seconds: 1));
+        yield await fetchUtxos();
+      } catch (e) {
+        print(e);
+        rethrow;
+      }
     }
   }
 }
