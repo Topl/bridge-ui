@@ -20,7 +20,7 @@ class WalletUtxos extends _$WalletUtxos {
     final genusRpcClient =
         TransactionServiceClient(rpcChannels.genusRpcChannel);
 
-    final password = "test".toUtf8();
+    final password = List.filled(32, 0);
     final wallet = (await serviceKit.walletApi.createAndSaveNewWallet(password))
         .getOrThrow();
     final mainKey = serviceKit.walletApi
