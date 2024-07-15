@@ -1,51 +1,30 @@
 import 'package:apparatus_wallet/features/bridge/providers/rpc_channel.dart';
 import 'package:apparatus_wallet/features/bridge/providers/service_kit.dart';
+import 'package:apparatus_wallet/features/bridge/providers/wallet_key_vault.dart';
 import 'package:brambldart/brambldart.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:topl_common/proto/brambl/models/address.pb.dart';
-
 import 'package:topl_common/proto/genus/genus_models.pb.dart';
 import 'package:topl_common/proto/genus/genus_rpc.pbgrpc.dart';
 import 'package:topl_common/proto/node/services/bifrost_rpc.pbgrpc.dart';
 
-part 'wallet_state.g.dart';
+part 'utxos_state.g.dart';
 
 @riverpod
-class WalletUtxos extends _$WalletUtxos {
+class UtxosState extends _$UtxosState {
   @override
   Stream<UtxosMap> build() async* {
+    await ref.watch(walletKeyVaultProvider.future);
     final serviceKit = await ref.watch(serviceKitProvider.future);
     final rpcChannels = ref.watch(rpcChannelProvider);
     final nodeRpcClient = NodeRpcClient(rpcChannels.nodeRpcChannel);
     final genusRpcClient =
         TransactionServiceClient(rpcChannels.genusRpcChannel);
 
-    // TODO: User provided
-    final password = List.filled(32, 0);
-    // TODO: Load existing
-    final wallet =
-        (await serviceKit.walletApi.createNewWallet(password)).getOrThrow();
-    (await serviceKit.walletApi.saveWallet(wallet.mainKeyVaultStore))
-        .getOrThrow();
-    final mainKey = serviceKit.walletApi
-        .extractMainKey(wallet.mainKeyVaultStore, password)
-        .getOrThrow();
-    try {
-      await serviceKit.walletStateApi.initWalletState(
-        NetworkConstants.privateNetworkId,
-        NetworkConstants.mainLedgerId,
-        mainKey.vk,
-      );
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
     final encodedGenesisAddress =
         serviceKit.walletStateApi.getAddress("nofellowship", "genesis", 1)!;
     final genesisAddress =
         AddressCodecs.decode(encodedGenesisAddress).getOrThrow();
-    final genesisLock =
-        serviceKit.walletStateApi.getLock("nofellowship", "genesis", 1)!;
 
     Future<UtxosMap> fetchUtxos() async {
       // Get the current address from the wallet
@@ -65,24 +44,14 @@ class WalletUtxos extends _$WalletUtxos {
       return utxos;
     }
 
-    try {
-      yield await fetchUtxos();
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
+    yield await fetchUtxos();
 
     // For each block adoption or unadoption
     await for (final _ in nodeRpcClient
         .synchronizationTraversal(SynchronizationTraversalReq())) {
-      try {
-        // Wait 1 second for Genus to catch up
-        await Future.delayed(const Duration(seconds: 1));
-        yield await fetchUtxos();
-      } catch (e) {
-        print(e);
-        rethrow;
-      }
+      // Wait 1 second for Genus to catch up
+      await Future.delayed(const Duration(seconds: 1));
+      yield await fetchUtxos();
     }
   }
 }

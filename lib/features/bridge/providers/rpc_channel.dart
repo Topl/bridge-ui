@@ -8,6 +8,7 @@ part 'rpc_channel.g.dart';
 class RpcChannel extends _$RpcChannel {
   @override
   RpcChannelState build() {
+    // TODO: User Provided
     final channel = makeChannel("localhost", 9094, false);
     return RpcChannelState(nodeRpcChannel: channel, genusRpcChannel: channel);
   }

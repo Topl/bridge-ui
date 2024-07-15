@@ -1,6 +1,5 @@
-import 'package:apparatus_wallet/features/bridge/providers/wallet_state.dart';
+import 'package:apparatus_wallet/features/bridge/providers/utxos_state.dart';
 import 'package:brambldart/brambldart.dart';
-import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fpdart/fpdart.dart' hide State;
@@ -11,13 +10,14 @@ import 'package:topl_common/proto/brambl/models/transaction/io_transaction.pb.da
 import 'package:topl_common/proto/brambl/models/transaction/spent_transaction_output.pb.dart';
 import 'package:topl_common/proto/brambl/models/transaction/unspent_transaction_output.pb.dart';
 import 'package:topl_common/proto/genus/genus_models.pb.dart';
+import 'package:topl_common/proto/quivr/models/shared.pb.dart';
 
 class UtxosView extends HookConsumerWidget {
   const UtxosView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final utxos = ref.watch(walletUtxosProvider);
+    final utxos = ref.watch(utxosStateProvider);
 
     return Scaffold(
       body: body(utxos),
@@ -28,8 +28,9 @@ class UtxosView extends HookConsumerWidget {
     return switch (utxos) {
       AsyncData(:final value) =>
         TransactView(utxos: value, submitTransaction: (tx) {}),
-      AsyncError(:final error) => Text("Utxos failed to load. Reason: $error"),
-      _ => const Text("Loading")
+      AsyncError(:final error) =>
+        Center(child: Text("Utxos failed to load. Reason: $error")),
+      _ => const Center(child: CircularProgressIndicator())
     };
   }
 }
@@ -45,6 +46,7 @@ class TransactView extends StatefulWidget {
 }
 
 class TransactViewState extends State<TransactView> {
+  // TODO: Move this state into Riverpod
   Set<TransactionOutputAddress> _selectedInputs = {};
   List<(String valueStr, String addressStr)> _newOutputEntries = [];
 
@@ -82,11 +84,11 @@ class TransactViewState extends State<TransactView> {
     );
   }
 
-  Int64 _inputSum() => _selectedInputs
+  Int128 _inputSum() => _selectedInputs
       .toList()
-      .map((v) => widget.utxos[v]!.transactionOutput.value)
-      .map((v) => v.quantity)
-      .fold(Int64.ZERO, (a, b) => a + b);
+      .map((v) => widget.utxos[v]!.transactionOutput.value.quantity)
+      .nonNulls
+      .fold(BigInt.zero.toInt128(), (a, b) => a + b);
 
   Future<IoTransaction> _createTransaction() async {
     var tx = IoTransaction();
@@ -187,20 +189,21 @@ class TransactViewState extends State<TransactView> {
   }
 
   DataRow _feeOutputRow() {
-    Int64 outputSum = Int64.ZERO;
+    Int128 outputSum = BigInt.zero.toInt128();
     String? errorText;
     for (final t in _newOutputEntries) {
-      final parsed = Int64.tryParseInt(t.$1);
-      if (parsed == null) {
+      try {
+        final parsed = BigInt.parse(t.$1).toInt128();
+        outputSum += parsed;
+      } catch (_) {
         errorText = "?";
         break;
-      } else {
-        outputSum += parsed;
       }
     }
 
     return DataRow(cells: [
-      DataCell(Text(errorText ?? (_inputSum() - outputSum).toString())),
+      DataCell(
+          Text(errorText ?? (_inputSum() - outputSum).toBigInt().toString())),
       const DataCell(Text("Tip")),
       const DataCell(IconButton(
         icon: Icon(Icons.cancel),
@@ -246,10 +249,11 @@ class TransactViewState extends State<TransactView> {
   }
 
   DataRow _inputEntryRow(MapEntry<TransactionOutputAddress, Txo> entry) {
+    final value = entry.value.transactionOutput.value;
+    final quantityString = value.quantity?.show ?? "-";
     return DataRow(
       cells: [
-        DataCell(Text("${entry.value.transactionOutput.value.quantity}",
-            style: const TextStyle(fontSize: 12))),
+        DataCell(Text(quantityString, style: const TextStyle(fontSize: 12))),
         DataCell(TextButton(
           onPressed: () {
             Clipboard.setData(ClipboardData(
