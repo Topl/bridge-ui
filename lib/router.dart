@@ -24,7 +24,8 @@ final router = GoRouter(
     GoRoute(
       path: homeRoute,
       builder: (context, state) => Provider(
-          create: (context) => BridgeApi(baseAddress: "http://localhost:4000"),
+          create: (context) =>
+              BridgeApiInterface(baseAddress: "http://localhost:4000"),
           child: Navigator(
               key: providedNavigator,
               onGenerateRoute: (settings) => MaterialPageRoute(

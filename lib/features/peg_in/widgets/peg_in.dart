@@ -4,10 +4,11 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:apparatus_wallet/features/peg_in/logic/bridge_api.dart';
+import 'package:apparatus_wallet/features/peg_in/logic/bridge_api_interface.dart';
 import 'package:uuid/uuid.dart';
 
 /// A scaffolded page which allows a user to begin a new Peg-In session
+// TODO: Update to use Riverpod
 class PegInPage extends StatefulWidget {
   const PegInPage({super.key});
 
@@ -44,14 +45,14 @@ class _PegInPageState extends State<PegInPage> {
   }
 
   Widget startSessionButton(BuildContext context) {
-    final bridgeApi = context.watch<BridgeApi>();
+    final bridgeApi = context.watch<BridgeApiInterface>();
     return TextButton.icon(
         onPressed: () => onStartSession(bridgeApi),
         icon: const Icon(Icons.start),
         label: const Text("Start Session"));
   }
 
-  void onStartSession(BridgeApi bridgeApi) async {
+  void onStartSession(BridgeApiInterface bridgeApi) async {
     setState(() => started = true);
     final uuid = const Uuid().v4();
     final hashed = sha256.convert(utf8.encode(uuid)).toString();
@@ -170,7 +171,7 @@ class _PegInAwaitingFundsPageState extends State<PegInAwaitingFundsPage> {
 
   Future<MintingStatus_PeginSessionWaitingForRedemption> awaitRedemption(
       BuildContext context) async {
-    BridgeApi client = context.watch<BridgeApi>();
+    BridgeApiInterface client = context.watch<BridgeApiInterface>();
     MintingStatus? status = await client.getMintingStatus(widget.sessionID);
     while (status is! MintingStatus_PeginSessionWaitingForRedemption) {
       ArgumentError.checkNotNull(status);
