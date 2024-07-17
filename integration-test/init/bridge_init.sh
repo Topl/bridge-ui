@@ -13,6 +13,11 @@ export TOPL_WALLET_MNEMONIC=/app/wallet/topl-mnemonic.txt
 
 rm -f $TOPL_WALLET_DB $TOPL_WALLET_JSON $TOPL_WALLET_MNEMONIC
 
+openssl ecparam -name secp256k1 -genkey -noout -out /app/wallet/consensusPrivateKey.pem
+openssl ec -in /app/wallet/consensusPrivateKey.pem -pubout -out /app/wallet/consensusPublicKey.pem
+openssl ecparam -name secp256k1 -genkey -noout -out /app/wallet/clientPrivateKey.pem
+openssl ec -in /app/wallet/clientPrivateKey.pem -pubout -out /app/wallet/clientPublicKey.pem
+
 bitcoin-cli -regtest -named -rpcconnect=bitcoin -rpcuser=bitcoin -rpcpassword=password createwallet wallet_name=testwallet
 export BTC_ADDRESS=`bitcoin-cli -rpcconnect=bitcoin -rpcuser=$BTC_USER -rpcpassword=$BTC_PASSWORD -rpcwallet=testwallet -regtest getnewaddress`
 echo BTC Address: $BTC_ADDRESS
@@ -47,3 +52,5 @@ export ASSET_UTXO=$(brambl-cli tx broadcast -i seriesMintingTxProved.pbuf -h bif
 echo "ASSET_UTXO: $ASSET_UTXO"
 until brambl-cli genus-query utxo-by-address --host bifrost --port 9084 --secure false --walletdb $TOPL_WALLET_DB; do sleep 5; done
 brambl-cli wallet balance --from-fellowship self --from-template default --walletdb $TOPL_WALLET_DB --host bifrost --port 9084 --secure false
+echo $(brambl-cli genus-query utxo-by-address -h bifrost --port 9084 --secure false --walletdb $TOPL_WALLET_DB | /bin/bash /extract_group_series_id.sh "Group Constructor") > /app/wallet/groupId.txt
+echo $(brambl-cli genus-query utxo-by-address -h bifrost --port 9084 --secure false --walletdb $TOPL_WALLET_DB | /bin/bash /extract_group_series_id.sh "Series Constructor") > /app/wallet/seriesId.txt

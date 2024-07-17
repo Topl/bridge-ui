@@ -8,5 +8,5 @@ class BridgeApi extends _$BridgeApi {
   @override
   BridgeApiInterface build() =>
       // TODO: Don't hardcode
-      BridgeApiInterface(baseAddress: "http://localhost:4000");
+      BridgeApiInterface(baseAddress: "http://localhost:5000");
 }
