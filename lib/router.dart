@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:apparatus_wallet/features/bridge/bridge_ui.dart';
-import 'package:apparatus_wallet/features/peg_in/logic/bridge_api.dart';
+import 'package:apparatus_wallet/features/peg_in/logic/bridge_api_interface.dart';
 import 'package:apparatus_wallet/features/peg_in/widgets/peg_in.dart';
 
 /// const routes # TODO move to own file once we get more routes

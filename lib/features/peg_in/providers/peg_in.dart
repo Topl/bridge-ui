@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:apparatus_wallet/features/peg_in/logic/bridge_api.dart';
+import 'package:apparatus_wallet/features/peg_in/logic/bridge_api_interface.dart';
 import 'package:apparatus_wallet/features/peg_in/providers/bridge_api.dart';
 import 'package:brambldart/brambldart.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
