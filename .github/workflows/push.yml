@@ -1,0 +1,17 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    uses: ./.github/workflows/_build.yml 
+
+  publish_prerelease:
+    uses: ./.github/workflows/_docker_publish.yml
+    needs: [build]
+    secrets: inherit
+    with:
+      remote-docker-image: "ghcr.io/topl/bridge-ui"

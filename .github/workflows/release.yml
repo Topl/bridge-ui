@@ -1,0 +1,23 @@
+name: Release
+
+on:
+  push:
+    tags: ['*']
+
+jobs:
+  build:
+    uses: ./.github/workflows/_build.yml
+
+  publish_dockerhub:
+    uses: ./.github/workflows/_docker_publish.yml
+    needs: [build]
+    secrets: inherit
+    with:
+      remote-docker-image: "toplprotocol/bridge-ui"
+
+  publish_ghcr:
+    uses: ./.github/workflows/_docker_publish.yml
+    needs: [build]
+    secrets: inherit
+    with:
+      remote-docker-image: "ghcr.io/topl/bridge-ui"
