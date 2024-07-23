@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:apparatus_wallet/features/peg_in/logic/http_client.dart';
 
-class BridgeApi {
+class BridgeApiInterface {
   final String baseAddress;
 
-  BridgeApi({required this.baseAddress});
+  BridgeApiInterface({required this.baseAddress});
 
   Future<StartSessionResponse> startSession(StartSessionRequest request) async {
     final response = await httpClient.post(
