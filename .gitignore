@@ -1,6 +1,6 @@
 node_modules/
 dist/
-mock/
+#mock/
 pubspec.lock
 .env
 
