@@ -19,7 +19,6 @@ mixin _$BridgeState {
   Currency get currency => throw _privateConstructorUsedError;
   double get value => throw _privateConstructorUsedError;
   CryptoRates get rates => throw _privateConstructorUsedError;
-  bool get loading => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $BridgeStateCopyWith<BridgeState> get copyWith =>
@@ -32,7 +31,7 @@ abstract class $BridgeStateCopyWith<$Res> {
           BridgeState value, $Res Function(BridgeState) then) =
       _$BridgeStateCopyWithImpl<$Res, BridgeState>;
   @useResult
-  $Res call({Currency currency, double value, CryptoRates rates, bool loading});
+  $Res call({Currency currency, double value, CryptoRates rates});
 }
 
 /// @nodoc
@@ -51,7 +50,6 @@ class _$BridgeStateCopyWithImpl<$Res, $Val extends BridgeState>
     Object? currency = null,
     Object? value = null,
     Object? rates = null,
-    Object? loading = null,
   }) {
     return _then(_value.copyWith(
       currency: null == currency
@@ -66,10 +64,6 @@ class _$BridgeStateCopyWithImpl<$Res, $Val extends BridgeState>
           ? _value.rates
           : rates // ignore: cast_nullable_to_non_nullable
               as CryptoRates,
-      loading: null == loading
-          ? _value.loading
-          : loading // ignore: cast_nullable_to_non_nullable
-              as bool,
     ) as $Val);
   }
 }
@@ -82,7 +76,7 @@ abstract class _$$BridgeStateImplCopyWith<$Res>
       __$$BridgeStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Currency currency, double value, CryptoRates rates, bool loading});
+  $Res call({Currency currency, double value, CryptoRates rates});
 }
 
 /// @nodoc
@@ -99,7 +93,6 @@ class __$$BridgeStateImplCopyWithImpl<$Res>
     Object? currency = null,
     Object? value = null,
     Object? rates = null,
-    Object? loading = null,
   }) {
     return _then(_$BridgeStateImpl(
       currency: null == currency
@@ -114,10 +107,6 @@ class __$$BridgeStateImplCopyWithImpl<$Res>
           ? _value.rates
           : rates // ignore: cast_nullable_to_non_nullable
               as CryptoRates,
-      loading: null == loading
-          ? _value.loading
-          : loading // ignore: cast_nullable_to_non_nullable
-              as bool,
     ));
   }
 }
@@ -126,10 +115,7 @@ class __$$BridgeStateImplCopyWithImpl<$Res>
 
 class _$BridgeStateImpl implements _BridgeState {
   const _$BridgeStateImpl(
-      {required this.currency,
-      required this.value,
-      required this.rates,
-      required this.loading});
+      {required this.currency, required this.value, required this.rates});
 
   @override
   final Currency currency;
@@ -137,12 +123,10 @@ class _$BridgeStateImpl implements _BridgeState {
   final double value;
   @override
   final CryptoRates rates;
-  @override
-  final bool loading;
 
   @override
   String toString() {
-    return 'BridgeState(currency: $currency, value: $value, rates: $rates, loading: $loading)';
+    return 'BridgeState(currency: $currency, value: $value, rates: $rates)';
   }
 
   @override
@@ -153,12 +137,11 @@ class _$BridgeStateImpl implements _BridgeState {
             (identical(other.currency, currency) ||
                 other.currency == currency) &&
             (identical(other.value, value) || other.value == value) &&
-            (identical(other.rates, rates) || other.rates == rates) &&
-            (identical(other.loading, loading) || other.loading == loading));
+            (identical(other.rates, rates) || other.rates == rates));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, currency, value, rates, loading);
+  int get hashCode => Object.hash(runtimeType, currency, value, rates);
 
   @JsonKey(ignore: true)
   @override
@@ -171,8 +154,7 @@ abstract class _BridgeState implements BridgeState {
   const factory _BridgeState(
       {required final Currency currency,
       required final double value,
-      required final CryptoRates rates,
-      required final bool loading}) = _$BridgeStateImpl;
+      required final CryptoRates rates}) = _$BridgeStateImpl;
 
   @override
   Currency get currency;
@@ -180,8 +162,6 @@ abstract class _BridgeState implements BridgeState {
   double get value;
   @override
   CryptoRates get rates;
-  @override
-  bool get loading;
   @override
   @JsonKey(ignore: true)
   _$$BridgeStateImplCopyWith<_$BridgeStateImpl> get copyWith =>

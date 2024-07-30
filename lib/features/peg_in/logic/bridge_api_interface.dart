@@ -2,11 +2,21 @@ import 'dart:convert';
 
 import 'package:apparatus_wallet/features/peg_in/logic/http_client.dart';
 
-class BridgeApiInterface {
+abstract class BridgeApiDefinition {
   final String baseAddress;
 
-  BridgeApiInterface({required this.baseAddress});
+  BridgeApiDefinition({required this.baseAddress});
 
+  Future<StartSessionResponse> startSession(StartSessionRequest request);
+
+  Future<MintingStatus?> getMintingStatus(String sessionID);
+}
+
+class BridgeApiInterface extends BridgeApiDefinition {
+
+  BridgeApiInterface({required baseAddress}) : super(baseAddress: '');
+
+  @override
   Future<StartSessionResponse> startSession(StartSessionRequest request) async {
     final response = await httpClient.post(Uri.parse("$baseAddress/api/start-session-pegin"),
         body: utf8.encode(json.encode(request.toJson())),
@@ -16,6 +26,7 @@ class BridgeApiInterface {
     return StartSessionResponse.fromJson(decoded);
   }
 
+  @override
   Future<MintingStatus?> getMintingStatus(String sessionID) async {
     final response = await httpClient.post(Uri.parse("$baseAddress/api/start-session-pegin"),
         body: utf8.encode(json.encode({"sessionID": sessionID})),

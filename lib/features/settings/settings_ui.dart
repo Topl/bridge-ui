@@ -108,23 +108,30 @@ class SettingsContent extends ConsumerWidget {
                     ],
                   ),
                   ExpansionTile(
-                    title: const Text(
-                      "Security",
-                      style: textStyleHeader,
-                    ),
-                    initiallyExpanded: true,
-                    childrenPadding: const EdgeInsets.all(16),
-                    children: <Widget>[
-                      SliderSettingWidget(
-                        settingsName: 'Inactivity Timeout (Seconds)',
-                        minValue: 5,
-                        maxValue: 60,
-                        currentValue: state.inactivityTimeout,
-                        onChanged: (double newValue) => notifier.setInactivityTimeout(newValue),
-                        divisions: 11, // Number of notches
+                      title: const Text(
+                        "Security",
+                        style: textStyleHeader,
                       ),
-                    ],
-                  ),
+                      initiallyExpanded: true,
+                      childrenPadding: const EdgeInsets.all(16),
+                      children: <Widget>[
+                        SliderSettingWidget(
+                          settingsName: 'Inactivity Timeout (Seconds)',
+                          minValue: 5,
+                          maxValue: 60,
+                          currentValue: state.inactivityTimeout,
+                          onChanged: (double newValue) => notifier.setInactivityTimeout(newValue),
+                          divisions: 11, // Number of notches
+                        ),
+                        Container(
+                          margin: const EdgeInsets.all(16),
+                          child: RemoveWalletDataButton(
+                            onRemove: () {
+                              // todo: implement local data-wipe
+                            },
+                          ),
+                        ),
+                      ]),
                   Visibility(
                     visible: isDebugMode,
 
@@ -153,6 +160,53 @@ class SettingsContent extends ConsumerWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class RemoveWalletDataButton extends StatelessWidget {
+  final VoidCallback onRemove;
+
+  const RemoveWalletDataButton({
+    super.key,
+    required this.onRemove,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      style: ButtonStyle(
+        padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 32, vertical: 16)),
+        backgroundColor: WidgetStateProperty.all(context.colors.primary),
+        textStyle: WidgetStateProperty.all(const TextStyle(fontSize: textL, fontWeight: FontWeight.bold)),
+        shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
+      ),
+      onPressed: () async {
+        final bool? confirmed = await showDialog<bool>(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Confirm'),
+              content: const Text('Are you sure you want to remove all wallet data? This action cannot be undone.'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: const Text('Remove'),
+                ),
+              ],
+            );
+          },
+        );
+
+        if (confirmed == true) {
+          onRemove();
+        }
+      },
+      child: const Text('Remove Wallet Data', style: textStyleHeader),
     );
   }
 }

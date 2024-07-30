@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class Assets {
@@ -10,5 +11,6 @@ class Assets {
   static final bitcoin = SvgPicture.asset("assets/bitcoin.svg", semanticsLabel: 'Bitcoin Logo');
   static final ethereum = SvgPicture.asset("assets/ethereum.svg", semanticsLabel: 'Ethereum Logo');
 
-
+  // images
+  static const apparatusImage = AssetImage('apparatus-dark.png');
 }

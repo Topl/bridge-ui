@@ -1,5 +1,6 @@
 import 'package:apparatus_wallet/constants/themes.dart';
 import 'package:apparatus_wallet/router.dart';
+import 'package:apparatus_wallet/utils/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -22,6 +23,7 @@ class Bridge extends ConsumerWidget {
     final router = ref.watch(routerProvider);
 
     return MaterialApp.router(
+      scaffoldMessengerKey: GlobalSnackBar.scaffoldMessengerKey,
       title: Strings.appTitle,
       theme: lightTheme,
       darkTheme: darkTheme,

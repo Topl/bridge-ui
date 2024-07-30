@@ -6,7 +6,7 @@ part of 'deposit_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$depositHash() => r'fee069ed2b5a6a2e1634412af924e9bdd2665247';
+String _$depositHash() => r'ed633e3218be8ef9826729be1dbfd2ff65393a7b';
 
 /// See also [Deposit].
 @ProviderFor(Deposit)

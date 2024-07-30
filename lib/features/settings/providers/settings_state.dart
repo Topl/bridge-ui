@@ -1,3 +1,4 @@
+import 'package:apparatus_wallet/utils/utils.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -8,7 +9,7 @@ part 'settings_state.g.dart';
 class Settings extends _$Settings {
   @override
   SettingsState build() {
-    return SettingsState.base();
+    return isDebugMode ? SettingsState.debug() : SettingsState.base();
   }
 
   // TODO: add persistence layer
@@ -59,6 +60,8 @@ class SettingsState with _$SettingsState {
       preferredFiatCurrency: FiatCurrency.usd,
     );
   }
+
+  factory SettingsState.debug() => SettingsState.base().copyWith(demoMode: true);
 }
 
 enum FiatCurrency { usd, eur, gbp, chf, aud, cad, jpy, cny }

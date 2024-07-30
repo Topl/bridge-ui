@@ -24,6 +24,7 @@ class TextFieldSettingWidget extends HookWidget {
       trailing: SizedBox(
         width: 200,
         child: TextField(
+          textAlign: TextAlign.end,
           controller: controller,
           decoration: InputDecoration(
             hintText: hintText,

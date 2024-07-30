@@ -39,6 +39,7 @@ dependencies:
   http: ^1.2.1 #TODO: Migrate to fetch_client
   fixnum: ^1.1.0
   awesome_flutter_extensions: ^1.2.0
+  pretty_qr_code: ^3.3.0
 
   #Misc
   uuid: ^4.2.1

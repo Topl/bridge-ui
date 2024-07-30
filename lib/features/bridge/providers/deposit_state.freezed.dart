@@ -17,6 +17,8 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$DepositState {
   Stage get stage => throw _privateConstructorUsedError;
+  String? get sessionID => throw _privateConstructorUsedError;
+  String? get escrowAddress => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $DepositStateCopyWith<DepositState> get copyWith =>
@@ -29,7 +31,7 @@ abstract class $DepositStateCopyWith<$Res> {
           DepositState value, $Res Function(DepositState) then) =
       _$DepositStateCopyWithImpl<$Res, DepositState>;
   @useResult
-  $Res call({Stage stage});
+  $Res call({Stage stage, String? sessionID, String? escrowAddress});
 }
 
 /// @nodoc
@@ -46,12 +48,22 @@ class _$DepositStateCopyWithImpl<$Res, $Val extends DepositState>
   @override
   $Res call({
     Object? stage = null,
+    Object? sessionID = freezed,
+    Object? escrowAddress = freezed,
   }) {
     return _then(_value.copyWith(
       stage: null == stage
           ? _value.stage
           : stage // ignore: cast_nullable_to_non_nullable
               as Stage,
+      sessionID: freezed == sessionID
+          ? _value.sessionID
+          : sessionID // ignore: cast_nullable_to_non_nullable
+              as String?,
+      escrowAddress: freezed == escrowAddress
+          ? _value.escrowAddress
+          : escrowAddress // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -64,7 +76,7 @@ abstract class _$$DepositStateImplCopyWith<$Res>
       __$$DepositStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Stage stage});
+  $Res call({Stage stage, String? sessionID, String? escrowAddress});
 }
 
 /// @nodoc
@@ -79,12 +91,22 @@ class __$$DepositStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? stage = null,
+    Object? sessionID = freezed,
+    Object? escrowAddress = freezed,
   }) {
     return _then(_$DepositStateImpl(
       stage: null == stage
           ? _value.stage
           : stage // ignore: cast_nullable_to_non_nullable
               as Stage,
+      sessionID: freezed == sessionID
+          ? _value.sessionID
+          : sessionID // ignore: cast_nullable_to_non_nullable
+              as String?,
+      escrowAddress: freezed == escrowAddress
+          ? _value.escrowAddress
+          : escrowAddress // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -92,14 +114,21 @@ class __$$DepositStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$DepositStateImpl implements _DepositState {
-  const _$DepositStateImpl({required this.stage});
+  const _$DepositStateImpl(
+      {required this.stage,
+      required this.sessionID,
+      required this.escrowAddress});
 
   @override
   final Stage stage;
+  @override
+  final String? sessionID;
+  @override
+  final String? escrowAddress;
 
   @override
   String toString() {
-    return 'DepositState(stage: $stage)';
+    return 'DepositState(stage: $stage, sessionID: $sessionID, escrowAddress: $escrowAddress)';
   }
 
   @override
@@ -107,11 +136,15 @@ class _$DepositStateImpl implements _DepositState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$DepositStateImpl &&
-            (identical(other.stage, stage) || other.stage == stage));
+            (identical(other.stage, stage) || other.stage == stage) &&
+            (identical(other.sessionID, sessionID) ||
+                other.sessionID == sessionID) &&
+            (identical(other.escrowAddress, escrowAddress) ||
+                other.escrowAddress == escrowAddress));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, stage);
+  int get hashCode => Object.hash(runtimeType, stage, sessionID, escrowAddress);
 
   @JsonKey(ignore: true)
   @override
@@ -121,11 +154,17 @@ class _$DepositStateImpl implements _DepositState {
 }
 
 abstract class _DepositState implements DepositState {
-  const factory _DepositState({required final Stage stage}) =
-      _$DepositStateImpl;
+  const factory _DepositState(
+      {required final Stage stage,
+      required final String? sessionID,
+      required final String? escrowAddress}) = _$DepositStateImpl;
 
   @override
   Stage get stage;
+  @override
+  String? get sessionID;
+  @override
+  String? get escrowAddress;
   @override
   @JsonKey(ignore: true)
   _$$DepositStateImplCopyWith<_$DepositStateImpl> get copyWith =>

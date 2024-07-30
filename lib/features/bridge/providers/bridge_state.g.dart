@@ -6,7 +6,7 @@ part of 'bridge_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$bridgeHash() => r'06e025c6da851d1f43cf8da5ad99e132744491a7';
+String _$bridgeHash() => r'0776c98254c55787611cedfdcbb12ba81308654a';
 
 /// See also [Bridge].
 @ProviderFor(Bridge)
