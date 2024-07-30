@@ -1,6 +1,6 @@
 node_modules/
 dist/
-mock/
+#mock/
 pubspec.lock
 .env
 
@@ -26,9 +26,10 @@ app.*.map.json
 .svn/
 
 # Auto generated files
-*.g.dart 
-*.freezed.dart
-*.mocks.dart
+# save on build_cycles, don't ignore generated files
+#*.g.dart
+#*.freezed.dart
+#*.mocks.dart
 
 
 # Android Studio will place build artifacts here

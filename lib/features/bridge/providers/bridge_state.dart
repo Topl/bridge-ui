@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:apparatus_wallet/features/bridge/providers/deposit_state.dart';
+import 'package:apparatus_wallet/utils/utils.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:http/http.dart' as http;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -13,6 +15,8 @@ class Bridge extends _$Bridge {
   BridgeState build() {
     return BridgeState.base();
   }
+
+  Deposit get depositStateNotifier => ref.read(depositProvider.notifier);
 
   swap({Currency? currency}) {
     final curr = currency ??= state.currency == Currency.ethereum ? Currency.bitcoin : Currency.ethereum;
@@ -65,11 +69,11 @@ class Bridge extends _$Bridge {
   }
 
   void startTransfer() {
-    state = state.copyWith(loading: true);
+    depositStateNotifier.setLoading();
 
-    // Simulate a transfer
-    Future.delayed(const Duration(seconds: 5), () {
-      state = state.copyWith(loading: false);
+    // arbitrary loading
+    Future.delayed(const Duration(seconds: 3), () {
+      depositStateNotifier.startDeposit("0295bb5a3b80eeccb1e38ab2cbac2545e9af6c7012cdc8d53bd276754c54fc2e4a");
     });
   }
 
@@ -82,14 +86,19 @@ class BridgeState with _$BridgeState {
     required Currency currency,
     required double value,
     required CryptoRates rates,
-    required bool loading,
   }) = _BridgeState;
 
-  factory BridgeState.base() =>
-      BridgeState(currency: Currency.ethereum, value: 0, rates: CryptoRates.zero(), loading: false);
+  factory BridgeState.base() => BridgeState(currency: Currency.bitcoin, value: 0, rates: CryptoRates.zero());
 }
 
 enum Currency { ethereum, bitcoin }
+
+/// extension to turn currency into string
+extension CurrencyExtension on Currency {
+  String toShortString() {
+    return capitalizeFirstLetter(toString().split('.').last);
+  }
+}
 
 class CryptoRates {
   final Map<Currency, double> rates;

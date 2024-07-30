@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:apparatus_wallet/features/bridge/providers/bridge_state.dart';
-import 'package:apparatus_wallet/features/bridge/widgets/currency_segments.dart';
+import 'package:apparatus_wallet/features/bridge/widgets/deposit/currency_segments.dart';
 import 'package:apparatus_wallet/utils/ui_utils.dart';
 
 class CurrencySelector extends HookConsumerWidget {

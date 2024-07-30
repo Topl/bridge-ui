@@ -8,6 +8,7 @@ const horizontalSpacerM = SizedBox(width: 16);
 const horizontalSpacerS = SizedBox(width: 8);
 
 // TODO check with designer
+const double textXL = 32;
 const double textL = 24;
 const double textM = 18;
 
@@ -18,3 +19,4 @@ const p3 = Color(0xFF2E314A);
 const a1 = Color(0xFF474A67);
 const a2 = Color(0xFF27272A);
 const bkg = Color(0xFF070707);
+const alt =  Color(0xFFF16D67);

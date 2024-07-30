@@ -11,10 +11,14 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # internal
+  #  topl_common: ^2.1.0
+  #  brambldart: ^2.0.0-beta.0
 
   # UI + Theming
   flex_color_scheme: ^7.3.1
   flutter_svg: ^2.0.10+1
+  sidebarx: ^0.17.1
 
   # Routing
   go_router: ^14.2.0
@@ -25,17 +29,40 @@ dependencies:
   riverpod_annotation: ^2.3.5
   flutter_hooks: ^0.20.5
   freezed_annotation: ^2.4.1
-  provider: ^6.1.2 #TODO: Migrate away from provider
+  json_annotation: ^4.9.0
 
   # Utils
   intl: ^0.19.0
   fpdart: ^1.1.0
+  url_launcher: ^6.3.0
   fetch_client: ^1.1.2
   http: ^1.2.1 #TODO: Migrate to fetch_client
+  fixnum: ^1.1.0
+  awesome_flutter_extensions: ^1.2.0
+  pretty_qr_code: ^3.3.0
 
   #Misc
-  uuid: ^4.4.0
+  uuid: ^4.2.1
   crypto: ^3.0.3
+  grpc: ^3.2.4
+
+  # Blockchain
+  brambldart:
+    # path: ../BramblDart
+    #  ^2.0.0-beta.0
+    git:
+      url: https://github.com/Topl/BramblDart.git
+      ref: main
+  topl_common: ^2.1.0
+  servicekit:
+    # path: ../dart_service_kit
+    git:
+      url: https://github.com/Topl/dart_service_kit.git
+      ref: isar-replacement
+  convert: ^3.1.1
+    # git:
+    #   url: https://github.com/Topl/dart_service_kit.git
+  #   ref: beta-0-updates
 
 dev_dependencies:
   flutter_test:
@@ -46,6 +73,7 @@ dev_dependencies:
   custom_lint: ^0.6.4
   riverpod_lint: ^2.3.10
   freezed: ^2.5.2
+  json_serializable: ^6.8.0
 
 flutter:
   uses-material-design: true
