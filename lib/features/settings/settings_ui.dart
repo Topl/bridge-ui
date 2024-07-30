@@ -6,6 +6,6 @@ class SettingsUi extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ;
+    return Container();
   }
 }

@@ -12,8 +12,8 @@ dependencies:
     sdk: flutter
 
   # internal
-  topl_common: ^2.1.0
-  brambldart: ^2.0.0-beta.0
+  #  topl_common: ^2.1.0
+  #  brambldart: ^2.0.0-beta.0
 
   # UI + Theming
   flex_color_scheme: ^7.3.1
@@ -49,7 +49,7 @@ dependencies:
   # Blockchain
   brambldart:
     # path: ../BramblDart
-  #  ^2.0.0-beta.0
+    #  ^2.0.0-beta.0
     git:
       url: https://github.com/Topl/BramblDart.git
       ref: main
@@ -62,7 +62,7 @@ dependencies:
   convert: ^3.1.1
     # git:
     #   url: https://github.com/Topl/dart_service_kit.git
-    #   ref: beta-0-updates
+  #   ref: beta-0-updates
 
 dev_dependencies:
   flutter_test:
