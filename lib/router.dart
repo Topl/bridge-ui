@@ -4,6 +4,7 @@ import 'package:apparatus_wallet/features/bridge/bridge_ui.dart';
 import 'package:apparatus_wallet/features/dashboard/dashboard.dart';
 import 'package:apparatus_wallet/features/peg_in/widgets/peg_in.dart';
 import 'package:apparatus_wallet/features/settings/settings_ui.dart';
+import 'package:apparatus_wallet/features/wallet/wallet.dart';
 import 'package:apparatus_wallet/utils/ui_utils.dart';
 import 'package:apparatus_wallet/utils/utils.dart';
 import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
@@ -50,7 +51,7 @@ GoRouter router(Ref ref) {
           GoRoute(
             parentNavigatorKey: _shellNavigatorKey,
             path: walletRoute,
-            builder: (context, state) => const Dashboard("Wallet"),
+            builder: (context, state) => const WalletUi(),
           ),
           GoRoute(
             parentNavigatorKey: _shellNavigatorKey,
