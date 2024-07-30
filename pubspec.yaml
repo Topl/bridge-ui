@@ -41,11 +41,17 @@ dependencies:
 
   # Blockchain
   brambldart:
-    path: ../BramblDart
+    # path: ../BramblDart
   #  ^2.0.0-beta.0
+    git:
+      url: https://github.com/Topl/BramblDart.git
+      ref: main
   topl_common: ^2.1.0
   servicekit:
-    path: ../dart_service_kit
+    # path: ../dart_service_kit
+    git:
+      url: https://github.com/Topl/dart_service_kit.git
+      ref: isar-replacement
   convert: ^3.1.1
     # git:
     #   url: https://github.com/Topl/dart_service_kit.git
