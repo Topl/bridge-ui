@@ -8,6 +8,7 @@ const horizontalSpacerM = SizedBox(width: 16);
 const horizontalSpacerS = SizedBox(width: 8);
 
 // TODO check with designer
+const double textXL = 32;
 const double textL = 24;
 const double textM = 18;
 

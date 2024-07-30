@@ -3,9 +3,10 @@ import 'package:apparatus_wallet/constants/routes.dart';
 import 'package:apparatus_wallet/features/bridge/bridge_ui.dart';
 import 'package:apparatus_wallet/features/dashboard/dashboard.dart';
 import 'package:apparatus_wallet/features/peg_in/widgets/peg_in.dart';
+import 'package:apparatus_wallet/features/settings/settings_ui.dart';
 import 'package:apparatus_wallet/utils/ui_utils.dart';
+import 'package:apparatus_wallet/utils/utils.dart';
 import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -23,7 +24,7 @@ GoRouter router(Ref ref) {
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
     initialLocation: dashboardRoute,
-    debugLogDiagnostics: !kReleaseMode ? true : false, // Turns logging off when in release mode
+    debugLogDiagnostics: isDebugMode ? true : false, // Turns logging off when in release mode
     routes: [
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
@@ -54,7 +55,7 @@ GoRouter router(Ref ref) {
           GoRoute(
             parentNavigatorKey: _shellNavigatorKey,
             path: settingsRoute,
-            builder: (context, state) => const Dashboard("Settings"),
+            builder: (context, state) => const SettingsUi(),
           ),
         ],
       ),

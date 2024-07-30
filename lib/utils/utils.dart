@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -27,3 +28,7 @@ Future<void> launchURL(String url) async {
     throw 'Could not launch $url';
   }
 }
+
+// is debug mode - Placeholder if we ever need more complex logic,
+// technically this only checks if we're not in release mode which is not the same
+bool get isDebugMode => !kReleaseMode;

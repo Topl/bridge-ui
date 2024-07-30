@@ -57,7 +57,7 @@ class BridgeDepositLoader extends HookConsumerWidget {
       data: (data) {
         switch (data.stage) {
           case Stage.deposit:
-              return const BridgeContent();
+            return const BridgeContent();
           case Stage.sendToEscrow:
           // TODO: Handle this case.
           case Stage.minting:
